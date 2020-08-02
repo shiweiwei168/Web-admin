@@ -1,0 +1,46 @@
+==========================
+Use SQlite at local. assume you install all package.
+=========================
+
+In config.py
+
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+flask db init
+flask db migrate -m "tables"
+flask db upgrade
+
+======================
+if the app.db isn't exist, init will create one.
+======================
+
+
+
+
+===================
+switch to MysQL on AWS
+===================
+
+Create a MySQL database using AWS RDS
+
+********public accessibility must be Yes.**********
+********Security Group must be created and open for your IP or every one ***************
+********remember the user and password,mine is 'admin' '12345678' ****************
+
+you can use MySQLworkbench to connect the database. create a database app.
+
+in config.py
+
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://admin:12345678@app.c3h4uslo3bhe.us-west-2.rds.amazonaws.com:3306/app'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+then run python3 db_create.py(create all tables) and insert_admin.py(insert admin admin into table Admin.)
+
+
+========================================
+I followed Step3-4
+https://medium.com/@rodkey/deploying-a-flask-application-on-aws-a72daba6bb80
+========================================

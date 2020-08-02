@@ -1,0 +1,113 @@
+deploy flask webapp to AWS EC2.
+
+lunch a EC2 instance. download the pem file. 
+use .pem login the instance.
+"chmod 400 Webapp.pem" 
+"ssh -i Webapp.pem ubuntu@34.219.56.159"  use your ip
+sudo apt-get update
+sudo apt install python3-pip
+git clone https://github.com/shiweiwei168/Web-admin
+apt-get install python3-venv
+
+python3 -m venv flask    //Create a venv called flask.  
+source flask/bin/activate  //activate the venv
+pip install -r requirements.txt
+run "FLASK_APP=admin.py"
+run "flask run"
+
+=====================================
+now, you should be able run app on the local of the instance without error. 
+=====================================
+
+Ctrl+c stop the service 
+
+sudo apt-get install nginx 
+sudo apt-get install gunicorn3   #I didn't use gunicorn3
+cd /etc/nginx/sites-enabled/
+sudo vim flaskapp
+
+#add txt under here into the file.
+server {
+    listen 80;
+    server_name 34.219.56.159; #you server IP
+    location / {
+        proxy_pass http://127.0.0.1:8000; 
+    }
+}
+
+sudo service nginx restart
+flask run 
+
+check the Security Groups for the EC2 instance. add a "HTTP TCP port 80" to inbound rules.  
+
+=====================================================
+Now,You should be able access the webapp use your IP of EC2
+=====================================================
+
+==================================
+tutorial I watched  1-5  
+https://www.youtube.com/watch?v=tW6jtOOGVJI&t=484s
+================================
+
+
+=======================================
+pip install gunicorn  # you must use pip install gunicorn under the venv, otherwise you will have don't have module xxxx problem.
+
+gunicorn admin:app    
+=====================================
+
+
+
+======================================
+Systemd
+======================================
+
+.service file under /etc/systemd/system
+[Unit]
+Description=<a description of your application>
+After=network.target
+
+[Service]
+User=<username>
+WorkingDirectory=<path to your app>
+ExecStart=<app start command>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+========================================
+sudo systemctl daemon-reload
+========================================
+
+$ sudo systemctl start <service-name>
+$ sudo systemctl stop <service-name>
+$ sudo systemctl restart <service-name>
+$ sudo systemctl status <service-name>
+========================================
+
+cd /etc/systemd/system
+sudo vim admin.service 
+add the txt that under this line into the .service file.
+==================================
+[Unit]
+Description=Webapp-admin
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Web-admin
+ExecStart=/home/ubuntu/flaskapp/bin/gunicorn -b localhost:8000 -w 4 admin:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+====================================
+$ sudo systemctl daemon-reload
+$ sudo systemctl start microblog
+==================================
+
+
+==============================
+watch this if you have question about systemd.
+https://blog.miguelgrinberg.com/post/running-a-flask-application-as-a-service-with-systemd
+=================================
