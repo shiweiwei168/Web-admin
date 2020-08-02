@@ -20,8 +20,7 @@ run "flask run"
 
 
 =====================================
-now, you should be able run app on the local of the instance without an error. 
-You also can just run it on your computer when you don't create a AWS EC2 instance.
+now, you should be able run app on the local of the instance without an error.
 =====================================
 
 Ctrl+c stop the service 
