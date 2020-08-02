@@ -1,7 +1,14 @@
-from datetime import datetime
-from app import db, login
+from datetime import datetime, timedelta
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from hashlib import md5
+from time import time
+import jwt
+from app import app, db, login
+import base64
+import os
 
 
 class Admin(UserMixin, db.Model):
