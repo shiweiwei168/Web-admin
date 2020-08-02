@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, SearchForm
-from app.models import Admin,Customer
+from app.models import Admin,User
 
 
 @app.route('/')
@@ -55,7 +55,7 @@ def register():
 @app.route('/view',methods=['GET'])
 @login_required
 def view():
-    customers = Customer.query.all()
+    customers = User.query.all()
     return render_template('view.html', title='view all customers', customers = customers)
 
 @app.route('/search',methods=['GET','POST'])
@@ -63,7 +63,7 @@ def view():
 def search():
     form = SearchForm()
     if form.validate_on_submit():
-        customers = Customer.query.filter_by(fname=form.fname.data, lname=form.lname.data, email=form.email.data)
+        customers = User.query.filter_by(fname=form.fname.data, lname=form.lname.data, email=form.email.data)
         if customers:
             flash('No record!')
         return render_template('view.html', title='view', customers = customers)

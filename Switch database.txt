@@ -12,7 +12,7 @@ flask db init
 flask db migrate -m "tables"
 flask db upgrade
 
-run python3 insert_admin.py(insert a user 'admin admin' into the table Admin and three customers in to the customer tablefor the Demo)
+run python3 insert_admin.py(insert a user 'admin admin' into the table Admin and three users in to the User tablefor the Demo)
 ======================
 if the app.db isn't exist, init will create one.
 ======================
@@ -38,7 +38,7 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://admin:12345678@app.c3h4uslo3bhe.us-we
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-then run python3 db_create.py(create all tables) and insert_admin.py(insert a user 'admin admin' into the table Admin and three customers in to the customer tablefor the Demo)
+then run python3 db_create.py(create all tables) and insert_admin.py(insert a user 'admin admin' into the table Admin and three users in to the User tablefor the Demo)
 
 
 ========================================
